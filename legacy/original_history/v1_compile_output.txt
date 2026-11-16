@@ -1,0 +1,4 @@
+history/knn_v1.c: In function 'load_csv':
+history/knn_v1.c:41:5: warning: ignoring return value of 'fgets' declared with attribute 'warn_unused_result' [-Wunused-result]
+   41 |     fgets(line, sizeof line, fp);                 /* skip header */
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -1,0 +1,2 @@
+gcc -std=c99 -Wall -Wextra -Wpedantic -O2 -o knn_engine src/dataset.c src/normalize.c src/knn.c src/metrics.c src/main.c
+gcc -std=c99 -Wall -Wextra -Wpedantic -O2 -o gen_data src/gen_data.c -lm

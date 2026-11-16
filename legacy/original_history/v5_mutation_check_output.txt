@@ -1,0 +1,3 @@
+  FAIL  LOO excludes the sample itself (0%)
+  FAIL  accuracy is realistic (not ~100%)
+31 passed, 2 failed

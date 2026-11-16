@@ -1,0 +1,25 @@
+[1] Glitchy sensor value: CO2 = 65535 ppm
+history/probe_v2.c:8:38: runtime error: signed integer overflow: 16674560 * 256 cannot be represented in type 'int'
+    normalised -> -49 (expected: clamp to 256)
+[2] Reading below range: CO2 = 100 ppm
+    normalised -> -36 (expected: clamp to 0)
+[3] Vote ties in leave-one-out, k=3 and k=5
+    k=3: 0 of 600 samples had a tied vote
+    k=5: 0 of 600 samples had a tied vote
+[4] k larger than the internal buffer (k = 20)
+history/knn_v2.c:88:37: runtime error: index 16 out of bounds for type 'int32_t [16]'
+history/knn_v2.c:88:41: runtime error: store to address 0x7f02fbd00180 with insufficient space for an object of type 'int32_t'
+WRITE of size 4 at 0x7f02fbd00180 thread T0
+      (longjmp and C++ exceptions *are* supported)
+SUMMARY: AddressSanitizer: stack-buffer-overflow history/knn_v2.c:88 in classify_fixed
+  0x7f02fbcfff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7f02fbcfff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7f02fbd00000: f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5
+  0x7f02fbd00080: f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 00 00 00 00
+  0x7f02fbd00100: f1 f1 f1 f1 00 04 f2 f2 00 00 00 00 00 00 00 00
+  0x7f02fbd00200: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7f02fbd00280: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7f02fbd00300: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7f02fbd00380: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7f02fbd00400: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  ASan internal:           fe

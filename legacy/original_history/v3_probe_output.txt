@@ -1,0 +1,8 @@
+  CO2=65535 clamps to 256                              PASS
+  CO2=100 (below range) clamps to 0                    PASS
+  CO2=1e30 (absurd value) clamps                       PASS
+  k=20 does not overflow                               PASS
+  k=0 treated as k=1                                   PASS
+  constant column: no crash, maps to 0                 PASS
+
+All checks passed

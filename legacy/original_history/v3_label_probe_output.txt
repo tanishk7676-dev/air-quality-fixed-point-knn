@@ -1,0 +1,3 @@
+v3 label_from_string("Hazardus") [typo]  = 2  (2 means Hazardous)
+v3 label_from_string("banana")           = 2  (2 means Hazardous)
+v3 label_from_string("clean") [lowercase]= 2  (0 expected)

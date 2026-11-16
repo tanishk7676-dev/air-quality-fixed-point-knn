@@ -1,0 +1,147 @@
+Loaded 48086 readings | Good: 3431 | Satisfactory: 12046 | Moderately polluted: 17355 | Poor: 6369 | Very Poor: 5964 | Severe: 2921
+LOOCV and benchmarks use 1200 evenly spaced records; predictions use all 48086.
+--------------------------------------------
+
+Adaptive k selection (leave-one-out, 1200 samples)
+ k | weighted fixed % | float majority %
+ 1 |        69.25 |   68.75
+ 3 |        71.83 |   73.75
+ 5 |        74.92 |   76.00
+ 7 |        75.33 |   76.00
+ 9 |        75.67 |   75.75
+11 |        76.25 |   75.25   <-- chosen
+13 |        75.67 |   74.67
+15 |        75.83 |   74.58
+Engine chose k = 11
+--------------------------------------------
+  k chosen using 1200 training-only samples for LOOCV
+
+Row-interleaved hold-out: 33659 train / 14427 test samples, k chosen on train = 15
+Majority-vote baseline on same test set: 79.16%
+
+actual\pred                             Good          Satisfactory   Moderately polluted                  Poor             Very Poor                Severe
+Good                                     825                   219                     2                     0                     0                     0
+Satisfactory                             200                  2962                   407                     1                     1                     0
+Moderately polluted                       10                   571                  4398                   236                     8                     1
+Poor                                       0                     2                   481                  1209                   219                     5
+Very Poor                                  0                     0                    20                   284                  1391                   114
+Severe                                     0                     0                     0                     9                   167                   685
+
+class                             precision%               recall%
+Good                                    79.7                  78.9
+Satisfactory                            78.9                  82.9
+Moderately polluted                     82.9                  84.2
+Poor                                    69.5                  63.1
+Very Poor                               77.9                  76.9
+Severe                                  85.1                  79.6
+macro-F1: 78.24%
+overall accuracy: 79.50%  (14427 samples)
+--------------------------------------------
+  k chosen using 1200 training-only samples for LOOCV
+
+Unseen-station hold-out: 37973 train / 10113 test samples, k chosen on train = 15
+Majority-vote baseline on same test set: 76.42%
+
+actual\pred                             Good          Satisfactory   Moderately polluted                  Poor             Very Poor                Severe
+Good                                     517                   159                     0                     1                     0                     0
+Satisfactory                             204                  1795                   260                     1                     0                     0
+Moderately polluted                        5                   411                  2872                   192                     5                     2
+Poor                                       0                     3                   444                   972                   183                     3
+Very Poor                                  0                     0                    16                   265                  1068                    78
+Severe                                     0                     0                     0                    11                   170                   476
+
+class                             precision%               recall%
+Good                                    71.2                  76.4
+Satisfactory                            75.8                  79.4
+Moderately polluted                     80.0                  82.4
+Poor                                    67.4                  60.6
+Very Poor                               74.9                  74.8
+Severe                                  85.2                  72.5
+macro-F1: 74.90%
+overall accuracy: 76.14%  (10113 samples)
+--------------------------------------------
+  k chosen using 1200 training-only samples for LOOCV
+
+Future-date (2020) hold-out: 36821 train / 11265 test samples, k chosen on train = 15
+Majority-vote baseline on same test set: 76.72%
+
+actual\pred                             Good          Satisfactory   Moderately polluted                  Poor             Very Poor                Severe
+Good                                     880                   302                     1                     0                     0                     0
+Satisfactory                             330                  2882                   495                     3                     0                     0
+Moderately polluted                        6                   502                  3376                   184                     2                     0
+Poor                                       1                     1                   384                   702                   145                     2
+Very Poor                                  0                     0                    10                   186                   706                    25
+Severe                                     0                     0                     0                     0                    46                    94
+
+class                             precision%               recall%
+Good                                    72.3                  74.4
+Satisfactory                            78.2                  77.7
+Moderately polluted                     79.1                  82.9
+Poor                                    65.3                  56.8
+Very Poor                               78.5                  76.2
+Severe                                  77.7                  67.1
+macro-F1: 73.73%
+overall accuracy: 76.70%  (11265 samples)
+--------------------------------------------
+
+Confusion matrix - distance-weighted fixed-point, k=11, leave-one-out
+actual\pred                             Good          Satisfactory   Moderately polluted                  Poor             Very Poor                Severe
+Good                                      57                    26                     0                     0                     0                     0
+Satisfactory                              24                   238                    34                     0                     0                     0
+Moderately polluted                        1                    47                   371                    18                     3                     1
+Poor                                       0                     0                    50                    95                    16                     0
+Very Poor                                  0                     0                     6                    33                   104                     3
+Severe                                     0                     0                     0                     0                    23                    50
+
+class                             precision%               recall%
+Good                                    69.5                  68.7
+Satisfactory                            76.5                  80.4
+Moderately polluted                     80.5                  84.1
+Poor                                    65.1                  59.0
+Very Poor                               71.2                  71.2
+Severe                                  92.6                  68.5
+macro-F1: 73.61%
+overall accuracy: 76.25%  (1200 samples)
+--------------------------------------------
+
+Benchmark: float vs fixed-point (k=11, 20 leave-one-out passes each)
+                                  float   fixed (Q8)
+accuracy                         75.25%       75.92%
+time (this PC)                  134.7 ms      138.2 ms
+feature memory                 33600 B       16800 B
+predictions that differ              39
+Memory saved: 50%.
+Speed: this PC has a hardware FPU, so fixed-point shows no speed advantage here.
+The speed benefit applies to microcontrollers without an FPU (not measured in this program).
+--------------------------------------------
+
+Why normalisation matters (float kNN, k=11, leave-one-out)
+  raw features (large-unit pollutants dominate):  75.08%
+  normalised features (same 1200 rows):  75.25%
+--------------------------------------------
+
+Classifying sample readings:
+  CPCB AQI: 40 (Good), dominant: PM10
+  kNN predicted (distance-weighted): Satisfactory (7/11 neighbours of winning class)
+  CPCB AQI: 153 (Moderately polluted), dominant: PM10
+  kNN predicted (distance-weighted): Poor (4/11 neighbours of winning class)
+  CPCB AQI: 325 (Very Poor), dominant: PM10
+  kNN predicted (distance-weighted): Severe (8/11 neighbours of winning class)
+  Note: input outside training range; kNN clamps it.
+  Air quality warning: reduce prolonged outdoor exposure.
+  CPCB AQI: 500 (Severe), dominant: PM2.5
+  kNN predicted (distance-weighted): Severe (10/11 neighbours of winning class)
+  Note: input outside training range; kNN clamps it.
+  Air quality warning: reduce prolonged outdoor exposure.
+--------------------------------------------
+
+Classifying data/sensor_log.csv
+  CPCB AQI: 42 (Good), dominant: PM2.5
+  kNN predicted (distance-weighted): Satisfactory (6/11 neighbours of winning class)
+  CPCB AQI: 183 (Moderately polluted), dominant: PM2.5
+  kNN predicted (distance-weighted): Poor (4/11 neighbours of winning class)
+  CPCB AQI: 331 (Very Poor), dominant: PM2.5
+  kNN predicted (distance-weighted): Severe (8/11 neighbours of winning class)
+  Note: input outside training range; kNN clamps it.
+  Air quality warning: reduce prolonged outdoor exposure.
+Summary: 3 readings | Good: 1 | Satisfactory: 0 | Moderately polluted: 1 | Poor: 0 | Very Poor: 1 | Severe: 0

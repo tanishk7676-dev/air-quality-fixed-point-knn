@@ -1,0 +1,45 @@
+ARCHIVED HISTORICAL OUTPUT - NOT THE CURRENT TEST REPORT
+See FINAL_VERIFICATION.txt for the current build and test counts.
+
+Expanded dataset test - 14 November 2026
+
+Loaded 48086 readings | Good: 3431 | Satisfactory: 12046 | Moderately polluted: 17355 | Poor: 6369 | Very Poor: 5964 | Severe: 2921
+LOOCV and benchmarks use 1200 evenly spaced records; predictions use all 48086.
+
+=== Air Quality kNN Engine (k=11) ===
+1) Auto-select k       5) Benchmark float vs fixed
+2) Classify a reading  6) Why normalise?
+3) Classify sensor log 7) Hold-out test (unseen data)
+4) Confusion matrix    0) Exit
+>   k chosen using 1200 training-only samples for LOOCV
+
+Hold-out test: 33659 train / 14427 unseen test samples, k chosen on train = 15
+Majority-vote baseline on same test set: 79.19%
+
+actual\pred                             Good          Satisfactory   Moderately polluted                  Poor             Very Poor                Severe
+Good                                     826                   218                     2                     0                     0                     0
+Satisfactory                             203                  2957                   409                     1                     1                     0
+Moderately polluted                       10                   568                  4401                   236                     8                     1
+Poor                                       0                     2                   481                  1206                   222                     5
+Very Poor                                  0                     0                    20                   283                  1392                   114
+Severe                                     0                     0                     0                     9                   167                   685
+
+class                             precision%               recall%
+Good                                    79.5                  79.0
+Satisfactory                            79.0                  82.8
+Moderately polluted                     82.8                  84.2
+Poor                                    69.5                  62.9
+Very Poor                               77.8                  76.9
+Severe                                  85.1                  79.6
+macro-F1: 78.21%
+overall accuracy: 79.48%  (14427 samples)
+
+=== Air Quality kNN Engine (k=11) ===
+1) Auto-select k       5) Benchmark float vs fixed
+2) Classify a reading  6) Why normalise?
+3) Classify sensor log 7) Hold-out test (unseen data)
+4) Confusion matrix    0) Exit
+> 
+Automated test command: make test
+Historical result: PASS: 24 checks (superseded by verified 31-check run; see VERIFIED_TEST_RESULTS.txt)
+LOOCV: limited to 1200 evenly spaced samples; not run on all 48086 records.

@@ -1,0 +1,50 @@
+gcc -std=c99 -Wall -Wextra -Wpedantic -O2 -Isrc -o test_knn tests/test_knn.c src/dataset.c src/normalize.c src/knn.c src/metrics.c
+./test_knn
+warning: line 4 skipped (malformed)
+warning: line 5 skipped (unknown label 'Hazardus')
+Label parsing (bug: v1-v3 turned any unknown text into 'Hazardous')
+  PASS  'Clean' -> 0
+  PASS  'clean' lowercase -> 0
+  PASS  'HAZARDOUS' uppercase -> 2
+  PASS  typo 'Hazardus' -> -1
+  PASS  garbage 'banana' -> -1
+
+CSV loading
+  PASS  loads 3 valid rows
+  PASS  counts 2 skipped lines
+  PASS  handles CRLF on last row
+  PASS  missing file returns -1
+
+Normalisation (bugs: overflow on glitch value, divide-by-zero)
+  PASS  min maps to 0
+  PASS  max maps to 256
+  PASS  mid value is about 128
+  PASS  65535 clamps to 256
+  PASS  below range clamps to 0
+  PASS  absurd 1e30 clamps to 256
+  PASS  in_range true inside
+  PASS  in_range false outside
+  PASS  constant column maps to 0 (no crash)
+
+kNN core (bugs: leave-one-out self-match, k overflow, ties)
+  PASS  predicts class 0 near cluster 0
+  PASS  predicts class 2 near cluster 2
+  PASS  float version agrees
+  PASS  votes_out reports 3 of 3
+  PASS  k=100 is clamped, no overflow
+  PASS  k=0 treated as k=1
+  PASS  LOO k=1 on clean clusters = 100%
+  PASS  LOO excludes the sample itself (0%)
+  PASS  3-way tie goes to nearest neighbour
+
+Adaptive k + fixed vs float on the real dataset
+  PASS  selected k is a candidate
+  PASS  selected k has the best accuracy
+  PASS  accuracy is realistic (not ~100%)
+  PASS  fixed and float differ on < 2% of predictions
+
+Confusion matrix
+  PASS  total counts valid entries only
+  PASS  accuracy = 3/4 = 75%
+
+33 passed, 0 failed

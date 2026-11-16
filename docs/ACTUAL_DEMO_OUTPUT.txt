@@ -1,0 +1,96 @@
+./knn_engine data/illustrative_training.csv --demo
+Loaded 330 readings | Good: 76 | Satisfactory: 50 | Moderately polluted: 45 | Poor: 38 | Very Poor: 67 | Severe: 54
+--------------------------------------------
+
+Adaptive k selection (leave-one-out, 330 samples)
+ k | fixed-point % | float %
+ 1 |        73.03 |   72.73
+ 3 |        72.42 |   73.33
+ 5 |        76.67 |   77.58
+ 7 |        78.18 |   77.27
+ 9 |        78.79 |   78.79
+11 |        79.39 |   78.79   <-- chosen
+13 |        79.39 |   79.70
+15 |        78.48 |   79.09
+Engine chose k = 11
+--------------------------------------------
+
+Hold-out test: 231 train / 99 unseen test samples, k chosen on train = 11
+actual\pred                             Good          Satisfactory   Moderately polluted                  Poor             Very Poor                Severe
+Good                                      18                     3                     0                     0                     0                     0
+Satisfactory                               1                     6                     3                     0                     0                     0
+Moderately polluted                        0                     1                    13                     3                     0                     0
+Poor                                       0                     0                     0                    13                     0                     0
+Very Poor                                  0                     0                     0                     5                    16                     0
+Severe                                     0                     0                     0                     0                     1                    16
+
+class                             precision%               recall%
+Good                                    94.7                  85.7
+Satisfactory                            60.0                  60.0
+Moderately polluted                     81.2                  76.5
+Poor                                    61.9                 100.0
+Very Poor                               94.1                  76.2
+Severe                                 100.0                  94.1
+overall accuracy: 82.83%  (99 samples)
+--------------------------------------------
+
+Confusion matrix - fixed-point, k=11, leave-one-out
+actual\pred                             Good          Satisfactory   Moderately polluted                  Poor             Very Poor                Severe
+Good                                      65                    11                     0                     0                     0                     0
+Satisfactory                              10                    30                    10                     0                     0                     0
+Moderately polluted                        0                     0                    39                     6                     0                     0
+Poor                                       0                     0                     0                    33                     5                     0
+Very Poor                                  0                     0                     0                    15                    48                     4
+Severe                                     0                     0                     0                     0                     7                    47
+
+class                             precision%               recall%
+Good                                    86.7                  85.5
+Satisfactory                            73.2                  60.0
+Moderately polluted                     79.6                  86.7
+Poor                                    61.1                  86.8
+Very Poor                               80.0                  71.6
+Severe                                  92.2                  87.0
+overall accuracy: 79.39%  (330 samples)
+--------------------------------------------
+
+Benchmark: float vs fixed-point (k=11, 20 leave-one-out passes each)
+                                  float   fixed (Q8)
+accuracy                         78.79%       79.39%
+time (this PC)                   12.0 ms       10.6 ms
+feature memory                 10560 B        5280 B
+predictions that differ               6
+Memory saved: 50%.
+Speed: this PC has a hardware FPU, so fixed-point shows no speed advantage here.
+The speed benefit applies to microcontrollers without an FPU (not measured in this program).
+--------------------------------------------
+
+Why normalisation matters (float kNN, k=11, leave-one-out)
+  raw features (large-unit pollutants dominate):  77.88%
+  normalised features (all fairly weighted):  78.79%
+--------------------------------------------
+
+Classifying sample readings:
+  CPCB AQI: 40 (Good), dominant: PM10
+  kNN predicted: Good (8/11 votes)
+  CPCB AQI: 153 (Moderately polluted), dominant: PM10
+  kNN predicted: Moderately polluted (8/11 votes)
+  CPCB AQI: 325 (Very Poor), dominant: PM10
+  kNN predicted: Severe (8/11 votes)
+  Note: input outside training range; kNN clamps it.
+  Air quality warning: reduce prolonged outdoor exposure.
+  CPCB AQI: 500 (Severe), dominant: PM2.5
+  kNN predicted: Severe (11/11 votes)
+  Note: input outside training range; kNN clamps it.
+  Air quality warning: reduce prolonged outdoor exposure.
+--------------------------------------------
+
+Classifying data/sensor_log.csv
+  CPCB AQI: 42 (Good), dominant: PM2.5
+  kNN predicted: Good (9/11 votes)
+  CPCB AQI: 183 (Moderately polluted), dominant: PM2.5
+  kNN predicted: Moderately polluted (10/11 votes)
+  CPCB AQI: 331 (Very Poor), dominant: PM2.5
+  kNN predicted: Severe (8/11 votes)
+  Note: input outside training range; kNN clamps it.
+  Air quality warning: reduce prolonged outdoor exposure.
+Summary: 3 readings | Good: 1 | Satisfactory: 0 | Moderately polluted: 1 | Poor: 0 | Very Poor: 1 | Severe: 0

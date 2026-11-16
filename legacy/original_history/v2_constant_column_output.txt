@@ -1,0 +1,5 @@
+/home/claude/knn_engine/history/knn_v2.c:69:63: runtime error: division by zero
+AddressSanitizer:DEADLYSIGNAL
+=================================================================
+==198==ERROR: AddressSanitizer: FPE on unknown address 0x5558b9765cb7 (pc 0x5558b9765cb7 bp 0x7ffd72c2e620 sp 0x7ffd72c2e5d0 T0)
+    #0 0x5558b9765cb7 in normalise_all /home/claude/knn_engine/history/knn_v2.c:69

@@ -1,0 +1,85 @@
+Loaded 600 readings | Clean: 163 | Moderate: 255 | Hazardous: 182
+--------------------------------------------
+
+Adaptive k selection (leave-one-out, 600 samples)
+ k | fixed-point % | float %
+ 1 |        85.83 |   86.00
+ 3 |        88.67 |   88.83
+ 5 |        88.50 |   88.67
+ 7 |        88.33 |   88.33
+ 9 |        89.00 |   89.33
+11 |        90.17 |   90.00   <-- chosen
+13 |        89.67 |   89.50
+15 |        89.17 |   89.17
+Engine chose k = 11
+--------------------------------------------
+
+Hold-out test: 420 train / 180 unseen test samples, k chosen on train = 15
+actual\pred      Clean  Moderate Hazardous
+Clean               37        13         0
+Moderate             5        68         1
+Hazardous            0         8        48
+
+class         precision%     recall%
+Clean               88.1        74.0
+Moderate            76.4        91.9
+Hazardous           98.0        85.7
+overall accuracy: 85.00%  (180 samples)
+--------------------------------------------
+
+Confusion matrix - fixed-point, k=11, leave-one-out
+actual\pred      Clean  Moderate Hazardous
+Clean              142        21         0
+Moderate            11       238         6
+Hazardous            0        21       161
+
+class         precision%     recall%
+Clean               92.8        87.1
+Moderate            85.0        93.3
+Hazardous           96.4        88.5
+overall accuracy: 90.17%  (600 samples)
+--------------------------------------------
+
+Benchmark: float vs fixed-point (k=11, 20 leave-one-out passes each)
+                                  float   fixed (Q8)
+accuracy                         90.00%       90.17%
+time (this PC)                   19.7 ms       23.8 ms
+feature memory                  9600 B        4800 B
+predictions that differ               1
+Memory saved: 50%.
+Speed: this PC has a hardware FPU, so fixed-point shows no speed advantage here.
+The speed benefit applies to microcontrollers without an FPU (not measured in this program).
+--------------------------------------------
+
+Why normalisation matters (float kNN, k=11, leave-one-out)
+  raw features (CO2 dominates the distance):  58.67%
+  normalised features (all fairly weighted):  90.00%
+--------------------------------------------
+
+Classifying sample readings:
+  CO2=450  CO=2.0  Temp=24.0  Hum=50.0  ->  Clean  (11 of 11 neighbours agree)
+  CO2=1200  CO=9.0  Temp=31.0  Hum=60.0  ->  Moderate  (11 of 11 neighbours agree)
+  CO2=2300  CO=22.0  Temp=33.0  Hum=70.0  ->  Hazardous  (11 of 11 neighbours agree)
+  *** ALERT: hazardous air - ventilate / leave the area ***
+  CO2=65535  CO=5.0  Temp=25.0  Hum=50.0  ->  Hazardous  (6 of 11 neighbours agree)
+  note: a value is outside the range seen in training - it was clamped. Check the sensor.
+  *** ALERT: hazardous air - ventilate / leave the area ***
+--------------------------------------------
+
+Classifying data/sensor_log.csv
+  CO2=420  CO=1.0  Temp=23.5  Hum=45.0  ->  Clean  (11 of 11 neighbours agree)
+  CO2=510  CO=2.2  Temp=24.0  Hum=48.5  ->  Clean  (11 of 11 neighbours agree)
+  CO2=780  CO=4.5  Temp=26.0  Hum=52.0  ->  Clean  (11 of 11 neighbours agree)
+  CO2=1050  CO=7.0  Temp=28.5  Hum=58.0  ->  Moderate  (8 of 11 neighbours agree)
+  CO2=1380  CO=10.5  Temp=30.0  Hum=62.0  ->  Moderate  (9 of 11 neighbours agree)
+  CO2=1650  CO=14.0  Temp=31.5  Hum=66.0  ->  Hazardous  (7 of 11 neighbours agree)
+  *** ALERT: hazardous air - ventilate / leave the area ***
+  CO2=1900  CO=18.5  Temp=32.0  Hum=70.0  ->  Hazardous  (11 of 11 neighbours agree)
+  *** ALERT: hazardous air - ventilate / leave the area ***
+  CO2=2250  CO=23.0  Temp=34.0  Hum=75.0  ->  Hazardous  (11 of 11 neighbours agree)
+  *** ALERT: hazardous air - ventilate / leave the area ***
+  CO2=640  CO=3.0  Temp=25.0  Hum=50.0  ->  Clean  (11 of 11 neighbours agree)
+  CO2=65535  CO=6.0  Temp=27.0  Hum=55.0  ->  Hazardous  (7 of 11 neighbours agree)
+  note: a value is outside the range seen in training - it was clamped. Check the sensor.
+  *** ALERT: hazardous air - ventilate / leave the area ***
+Summary: 10 readings | Clean: 4 | Moderate: 2 | Hazardous: 4

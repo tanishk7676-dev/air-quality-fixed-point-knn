@@ -1,0 +1,10 @@
+Loaded 600 rows
+
+ k | fixed % | float %
+ 1 | 100.00  | 100.00
+ 3 |  93.83  |  93.67
+ 5 |  93.17  |  93.00
+ 7 |  92.17  |  92.00
+
+Adaptive choice: k = 1 (accuracy 100.00%)
+New reading -> Moderate

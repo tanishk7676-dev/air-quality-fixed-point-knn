@@ -1,0 +1,11 @@
+FINAL VERIFICATION - 15 November 2026
+Build: gcc -std=c99 -Wall -Wextra -Wpedantic -O2 (successful)
+Regression tests: 41/41 passed
+Dataset: 48,086 rows (unchanged)
+Full demonstration: completed successfully
+Row-interleaved: accuracy 79.50%, macro-F1 78.24%
+Unseen-station: accuracy 76.14%, macro-F1 74.90%
+Future-year (2020): accuracy 76.70%, macro-F1 73.73%
+Normalization on same 1200 rows: raw 75.08%, normalized 75.25%
+Changes to fixed-point scaling can cause small prediction differences; results above are newly measured, not copied from earlier reports.
+Limitations: historical third-party CPCB-derived dataset; no independent certification; seven-pollutant inputs require correct averaging periods; AQI beyond last breakpoint capped at 500 as an educational convention.

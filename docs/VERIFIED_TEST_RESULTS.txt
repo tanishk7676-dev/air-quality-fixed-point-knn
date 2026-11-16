@@ -1,0 +1,20 @@
+ARCHIVED PREVIOUS VERIFICATION - SEE FINAL_VERIFICATION.txt
+
+Verified: make, make test (31 checks), make demo.
+Row-interleaved hold-out: 33659 train / 14427 test samples, k chosen on train = 15
+macro-F1: 78.21%
+overall accuracy: 79.48%  (14427 samples)
+Unseen-station hold-out: 37973 train / 10113 test samples, k chosen on train = 15
+macro-F1: 74.87%
+overall accuracy: 76.11%  (10113 samples)
+Future-date (2020) hold-out: 36821 train / 11265 test samples, k chosen on train = 15
+macro-F1: 73.75%
+overall accuracy: 76.74%  (11265 samples)
+macro-F1: 73.58%
+overall accuracy: 76.33%  (1200 samples)
+  raw features (large-unit pollutants dominate):  75.08%
+  normalised features (same 1200 rows):  75.25%
+
+Final code cleanup verification: make test -> PASS: 34 checks; make demo -> exit 0. Historical accuracy results are unchanged because the training CSV and evaluation logic were not changed.
+
+Final code cleanup verification: make test -> PASS: 34 checks; make demo -> exit 0. Historical accuracy results are unchanged because the training CSV and evaluation logic were not changed.
